@@ -115,21 +115,13 @@ int main(void)
 
 	system160mhz();        /* sysclk=160MHz, dividers configured, mode trans*/
 
-	/* GPIO Initialization */
-	GPIO_Initialization();
+	/* Application  Initialization  start Here */
+	APPCanInitilization();
+	/* Debug Port Init */
+	LINFlexD_1_Init();
 
+	/* Initialization ENDs Here */
 
-#if !LOOPBACK
-	initCAN_1();             /* Initialize FLEXCAN 1 & one of its buffers for receive if no loopback */
-#endif
-
-#if !(DEVKIT)
-	initCAN_0();             /* Initialize FlexCAN 0 & one of its buffers for transmit and receive if loopback enabled */
-	LINFlexD_0_Init();		/* Initialize LINFlexD_0 to transmit messages to terminal */
-#else
-	initCAN_2();			/* Initialize FlexCAN 2 & one of its buffers for transmit and receive if loopback enabled  */
-	LINFlexD_1_Init();		/* Initialize LINFlexD_1 to transmit messages to terminal */
-#endif
 
 	TransmitData((const char*)intro,(uint32_t)strlen((const char*)intro));
 
@@ -147,7 +139,7 @@ int main(void)
 	while (1) {
 
 	memset(CANTxBuff, 0x00, 8 );
-	GPIO_ReadOutToBuffer(CANTxBuff);
+//	GPIO_ReadOutToBuffer(CANTxBuff);
 	TransmitMsg(CANTxBuff, 8 );           /* Transmit one message from a FlexCAN 0 buffer */
 	ReceiveMsg();            /* Wait for the message to be received at FlexCAN 1 */
 	CAN_msg_count++;         /* Increment CAN message counter */

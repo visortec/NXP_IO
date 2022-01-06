@@ -9,6 +9,7 @@
 
 #include "Dev_Can.h"
 #include "MPC5744P.h"
+#include "project.h"
 #include<string.h>
 
 
@@ -65,15 +66,16 @@ void Dev_CANInitialization(void)
  */
 void Dev_CANTransmitData(uint32_t ExID, char *pBuf, char MsgLen)
 {
-	  CAN_2.MB[0].CS.B.IDE = 1;       /* Use standard ID length */
-	  CAN_2.MB[0].ID.R = ExID;		  /* Transmit ID is 0x555 */
-	  CAN_2.MB[0].CS.B.RTR = 0;       /* Data frame, not remote Tx request frame */
-	  CAN_2.MB[0].CS.B.DLC = MsgLen ;    /*#bytes to transmit w/o null*/
-	  for ( i=0; i < MsgLen; i++) {
-	    CAN_2.MB[0].DATA.B[i] = pBuf[i];      /* Data to be transmitted */
-	  }
-	  CAN_2.MB[0].CS.B.SRR = 1;     /* Tx frame (not req'd for standard frame)*/
-	  CAN_2.MB[0].CS.B.CODE =0xC;   /* Activate msg. buf. to transmit data frame */
+	int i = 0;
+	CAN_2.MB[0].CS.B.IDE = 1;       /* Use standard ID length */
+	CAN_2.MB[0].ID.R = ExID;		  /* Transmit ID is 0x555 */
+	CAN_2.MB[0].CS.B.RTR = 0;       /* Data frame, not remote Tx request frame */
+	CAN_2.MB[0].CS.B.DLC = MsgLen ;    /*#bytes to transmit w/o null*/
+	for ( i=0; i < MsgLen; i++) {
+		CAN_2.MB[0].DATA.B[i] = pBuf[i];      /* Data to be transmitted */
+	}
+	CAN_2.MB[0].CS.B.SRR = 1;     /* Tx frame (not req'd for standard frame)*/
+	CAN_2.MB[0].CS.B.CODE =0xC;   /* Activate msg. buf. to transmit data frame */
 }
 
 /*@Brief: RX CAN Frame

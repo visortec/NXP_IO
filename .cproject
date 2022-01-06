@@ -47,6 +47,8 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${VLE_EWL_DIR}/EWL_C/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${VLE_EWL_DIR}/EWL_C/include/pa&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/FlexCAN_MPC5744P_/APPLICATION/Inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/FlexCAN_MPC5744P_/Drivers/Inc}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1910457084" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -137,7 +139,8 @@
 							<option id="com.freescale.s32ds.cross.gnu.e200.option.target.family.1545952735.1862795952" name="Target processor" superClass="com.freescale.s32ds.cross.gnu.e200.option.target.family.1545952735"/>
 							<option id="com.freescale.s32ds.cross.gnu.e200.option.target.sysroot.949049463.274444854" name="Sysroot" superClass="com.freescale.s32ds.cross.gnu.e200.option.target.sysroot.949049463"/>
 							<option id="com.freescale.s32ds.cross.gnu.e200.option.target.libraries.1619564447.401816475" name="Libraries support" superClass="com.freescale.s32ds.cross.gnu.e200.option.target.libraries.1619564447"/>
-							<option defaultValue="true" id="com.freescale.s32ds.cross.gnu.e200.option.addtools.printsize.1339376332" superClass="com.freescale.s32ds.cross.gnu.e200.option.addtools.printsize" valueType="boolean"/>
+							<option defaultValue="true" id="com.freescale.s32ds.cross.gnu.e200.option.addtools.printsize.1339376332" name="Print size" superClass="com.freescale.s32ds.cross.gnu.e200.option.addtools.printsize" valueType="boolean"/>
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.targetPlatform.gnu.cross" isAbstract="false" osList="all" superClass="cdt.managedbuild.targetPlatform.gnu.cross"/>
 							<tool id="com.freescale.s32ds.cross.gnu.e200.tool.c.compiler.169815646" name="Standard S32DS C Compiler" superClass="com.freescale.s32ds.cross.gnu.e200.tool.c.compiler.1684663929">
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1364590895" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
