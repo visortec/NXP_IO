@@ -17,6 +17,7 @@
 /*		PROTOTYPES					                                 	  */
 /*========================================================================*/
 void dummy 						  (void);
+extern void ETimer_ISR(void);
 
 /*========================================================================*/
 /*	GLOBAL VARIABLES						                              */
@@ -641,7 +642,7 @@ const uint32_t __attribute__ ((section (".intc_vector_table"))) IntcIsrVectorTab
 (uint32_t) &dummy, /* Vector # 608 Rx exception LFAST0 */
 (uint32_t) &dummy, /* Vector # 609 Rx ICLC LFAST0 */
 (uint32_t) &dummy, /* Vector # 610 Reserved LFAST0 */
-(uint32_t) &dummy, /* Vector # 611 TC0IR eTimer_0 */
+(uint32_t) &ETimer_ISR, /* Vector # 611 TC0IR eTimer_0 */
 (uint32_t) &dummy, /* Vector # 612 TC1IR eTimer_0 */
 (uint32_t) &dummy, /* Vector # 613 TC2IR eTimer_0 */
 (uint32_t) &dummy, /* Vector # 614 TC3IR eTimer_0 */

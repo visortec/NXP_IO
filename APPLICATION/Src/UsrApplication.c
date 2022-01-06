@@ -9,6 +9,7 @@
 #include "Dev_GPIO.h"
 #include "Dev_CAN.h"
 #include "UsrApplication.h"
+#include "Dev_TIM.h"
 
 static char 	CanTxFrame[10] = {0};
 const uint32_t  CANTxExID = 0x0FEE000;
@@ -19,8 +20,18 @@ const uint32_t  CANTxExID = 0x0FEE000;
  */
 void APPCanInitilization(void)
 {
+	static uint32_t TimeOut  = 0 ;
 	Dev_CANInitialization();
 	Dev_GPIOInitialization();
+	ETimer_Init();
+	TimeOut = GetMilliSecCounter();
+	while(1)
+	{
+		if( GetMilliSecCounter() - TimeOut >= 100 )
+		{
+			break;
+		}
+	}
 }
 
 void APPTransmitCanExIdFrame(void)
@@ -29,9 +40,6 @@ void APPTransmitCanExIdFrame(void)
 	Dev_GPIOInputReadOutBuffer(CanTxFrame);
 	/* Transmit CAN Frame */
 	Dev_CANTransmitData(CANTxExID, CanTxFrame, 8);
-
-
-
 }
 
 

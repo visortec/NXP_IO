@@ -81,6 +81,8 @@ extern void xcptn_xmpl(void);
 void peri_clock_gating(void);
 
 extern uint8_t RxDATA[];
+static uint32_t sMillisecTimer = 0;
+
 
 /* If using DEVKIT, only allow loopback mode. If LOOPBACK not set,
  * return compile error.
@@ -113,9 +115,12 @@ int main(void)
 	peri_clock_gating();   /* configure gating/enabling peri. clocks for modes*/
 	                         /* configuraiton occurs after mode transition */
 
+	InitPeriClkGen();
 	system160mhz();        /* sysclk=160MHz, dividers configured, mode trans*/
 
 	/* Application  Initialization  start Here */
+	INTC_0.PSR[611].R = 0x8001;    //set interrupt priority
+
 	APPCanInitilization();
 	/* Debug Port Init */
 	LINFlexD_1_Init();
@@ -191,3 +196,35 @@ void peri_clock_gating (void) {
   MC_ME.PCTL78.B.RUN_CFG = 0x1; //Repeat for FlexCAN 1 if no loopback feature
 #endif
 }
+/*******************************************************************************
+Function Name : PeriClkGen_init
+Engineer      : Martin Kovar
+Date          : Jan-5-2016
+Parameters    :
+Modifies      :
+Returns       :
+Notes         : - Enable all auxiliary clocks, IMPORTANT - MOTC_CLK is set to 5MHz
+Issues        :
+*******************************************************************************/
+void InitPeriClkGen(void)
+{
+	  // MC_CGM.SC_DC0.R = 0x80030000;    // PBRIDGE0/PBRIDGE1_CLK at syst clk div by 4 ... (50 MHz)
+	  MC_CGM.AC0_SC.R = 0x02000000;    // Select PLL0 for auxiliary clock 0
+	  MC_CGM.AC0_DC0.R = 0x80090000;    // MOTC_CLK : Enable aux clk 0 div by 10 … (5 MHz)
+	  MC_CGM.AC0_DC1.R = 0x80070000;    // SGEN_CLK : Enable aux clk 0 div by 8 … (6.25 MHz)
+	  MC_CGM.AC0_DC2.R = 0x80010000;    // ADC_CLK : Enable aux clk 0 div by 2 … (25 MHz)
+	  MC_CGM.AC6_SC.R = 0x04000000;    // Select PLL1 for auxiliary clock 6
+	  MC_CGM.AC6_DC0.R = 0x80010000;    // CLKOUT0 : Enable aux clk 6 div by 2 … (100 MHz)
+	  MC_CGM.AC10_SC.R = 0x04000000;    // Select PLL1 for auxiliary clock 10
+	  MC_CGM.AC10_DC0.R = 0x80030000;    // ENET_CLK : Enable aux clk 10 div by 4 … (50 MHz)
+	  MC_CGM.AC11_SC.R = 0x04000000;    // Select PLL1 for auxiliary clock 11
+	  MC_CGM.AC11_DC0.R = 0x80030000;    // ENET_TIME_CLK : Enable aux clk 11 div by 4 … (50 MHz)
+	  MC_CGM.AC5_SC.R = 0x02000000;    // Select PLL0 for auxiliary clock 5
+	  MC_CGM.AC5_DC0.R = 0x80000000;    // LFAST_CLK : Enable aux clk 5 div by 1 … (50 MHz)
+	  MC_CGM.AC2_DC0.R = 0x80010000;    // CAN_PLL_CLK : Enable aux clk 2 (PLL0) div by 2 … (25 MHz)
+	  MC_CGM.AC1_DC0.R = 0x80010000;    // FRAY_PLL_CLK : Enable aux clk 1 (PLL0) div by 2 … (25 MHz)
+	  MC_CGM.AC1_DC1.R = 0x80010000;    // SENT_CLK : Enable aux clk 1 (PLL0) div by 2 … (25 MHz)
+}
+
+
+
