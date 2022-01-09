@@ -12,6 +12,7 @@
 
 
 void ETimer_Init(void);
+void Dev_PIT0_Init(uint32_t LDVAL);
 uint32_t GetMilliSecCounter(void);
 
 

@@ -4,7 +4,7 @@
  *  Created on: Feb 25, 2016
  *      Author: B55457
  */
-
+#if 0
 #ifndef PIT_H_
 #define PIT_H_
 
@@ -20,3 +20,4 @@ void PIT1_init(uint32_t);
 void PIT2_init(uint32_t);
 
 #endif /* PIT_H_ */
+#endif

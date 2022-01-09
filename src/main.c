@@ -115,11 +115,11 @@ int main(void)
 	peri_clock_gating();   /* configure gating/enabling peri. clocks for modes*/
 	                         /* configuraiton occurs after mode transition */
 
-	InitPeriClkGen();
+//	InitPeriClkGen();
 	system160mhz();        /* sysclk=160MHz, dividers configured, mode trans*/
 
 	/* Application  Initialization  start Here */
-	INTC_0.PSR[611].R = 0x8001;    //set interrupt priority
+//	INTC_0.PSR[611].R = 0x8001;    //set interrupt priority
 
 	APPCanInitilization();
 	/* Debug Port Init */
@@ -195,6 +195,7 @@ void peri_clock_gating (void) {
 #if !LOOPBACK
   MC_ME.PCTL78.B.RUN_CFG = 0x1; //Repeat for FlexCAN 1 if no loopback feature
 #endif
+  MC_ME.PCTL30.B.RUN_CFG = 0b001; //PCTL30 is PIT0 Peripheral Control Registers for Panther
 }
 /*******************************************************************************
 Function Name : PeriClkGen_init

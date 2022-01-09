@@ -4,7 +4,7 @@
  *  Created on: Feb 23, 2016
  *      Author: B55457
  */
-
+#if 0
 #ifndef GPIO_H_
 #define GPIO_H_
 
@@ -67,3 +67,4 @@ void initGPIO(void);
 
 
 #endif /* GPIO_H_ */
+#endif

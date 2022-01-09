@@ -5,7 +5,7 @@
  *      Author: B55457
  */
 
-
+#if 0
 #include "gpio.h"
 
 /********************************************************************************************
@@ -128,3 +128,5 @@ void DebouncedWaitTilHigh(uint16_t GPIO)
    //SIUL2.MSCR[PG7].R = 0x02000003;        /* PG7 = 103 */
    SIUL2.MSCR[PB6].R = 0x02000001; /* PB6 = 22 */
  }
+
+#endif

@@ -4,7 +4,7 @@
  *  Created on: Feb 25, 2016
  *      Author: B55457
  */
-
+#if 0
 
 #include "pit.h"
 
@@ -47,3 +47,4 @@ void PIT2_init(uint32_t LDVAL) {
 	INTC_0.PSR[228].R = 0x800B;
 	PIT_0.TIMER[2].TCTRL.B.TEN = 1; /* Enable channel */
 }
+#endif

@@ -18,6 +18,7 @@
 /*========================================================================*/
 void dummy 						  (void);
 extern void ETimer_ISR(void);
+extern void PIT0_Sec_ISR(void);
 
 /*========================================================================*/
 /*	GLOBAL VARIABLES						                              */
@@ -253,7 +254,7 @@ const uint32_t __attribute__ ((section (".intc_vector_table"))) IntcIsrVectorTab
 (uint32_t) &dummy, /* Vector # 223 Reserved for Ethernet_1_2 */
 (uint32_t) &dummy, /* Vector # 224 Reserved for Real Time Counter (RTC) */
 (uint32_t) &dummy, /* Vector # 225 Reserved for Autonomous Periodic Interrupt (API) */
-(uint32_t) &dummy, /* Vector # 226 Periodic Interrupt Timer (PIT_0) channel 0 PIT_0 */
+(uint32_t) &PIT0_Sec_ISR, /* Vector # 226 Periodic Interrupt Timer (PIT_0) channel 0 PIT_0 */
 (uint32_t) &dummy, /* Vector # 227 Periodic Interrupt Timer (PIT_0) channel 1 PIT_0 */
 (uint32_t) &dummy, /* Vector # 228 Periodic Interrupt Timer (PIT_0) channel 2 PIT_0 */
 (uint32_t) &dummy, /* Vector # 229 Periodic Interrupt Timer (PIT_0) channel 3 PIT_0 */
