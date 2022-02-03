@@ -9,7 +9,7 @@
 #include "MPC5744P.h"
 #include "project.h"
 
-_Bool GPIO_InputReadOut(int PinNumber);
+
 unsigned char BinToHexFormate(char *pBuf , char Len);
 
 

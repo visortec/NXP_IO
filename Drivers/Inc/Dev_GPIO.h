@@ -12,6 +12,7 @@
 void Dev_GPIOInitialization(void);
 _Bool Dev_GPIOInputReadOut(int PinNumber);
 void Dev_GPIOReadOutToBuffer(char *pBuf);
+_Bool GPIO_InputReadOut(int PinNumber);
 void Dev_GPIOSetClearPin(int PinNumber , _Bool State );
 void Dev_GPIOOutputReadOutBuffer(char *pBuf);
 
