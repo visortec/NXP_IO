@@ -105,8 +105,8 @@ void Dev_CANInitialization(void)
 void Dev_CANTransmitData(uint32_t ExID, char *pBuf, char MsgLen)
 {
 	int i = 0;
-	CAN_0.MB[0].CS.B.IDE = 0;       /* Use standard ID length */
-	CAN_0.MB[0].ID.R = 0x555;		  /* Transmit ID is 0x555 */
+	CAN_0.MB[0].CS.B.IDE = 1;       /* Use standard ID length */
+	CAN_0.MB[0].ID.R = ExID;		  /* Transmit ID is 0x555 */
 	CAN_0.MB[0].CS.B.RTR = 0;       /* Data frame, not remote Tx request frame */
 	CAN_0.MB[0].CS.B.DLC = MsgLen ;    /*#bytes to transmit w/o null*/
 	for ( i=0; i < MsgLen; i++) {

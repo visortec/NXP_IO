@@ -19,10 +19,11 @@
 
 
 #define ADC_VREF  3300 /* ADC ref voltage for both ADC modules. 3300mv or 5000mv */
-uint16_t Result[3];     /* ADC channel conversion results */
+static uint16_t Result[3];     /* ADC channel conversion results */
 uint16_t ResultInMv[3]; /* ADC channel conversion results in mv */
 
-void ADC1_0_PadConfig_ChanSelect(void) { /* Config ADC pads & select scan chans */
+void ADC_PadConfig_ChanSelect(void)
+{ /* Config ADC pads & select scan chans */
      /* Note:  MSCR.SSS configuration  is not needed for inputs if there is  */
      /*        no SSS value is in signal spreadsheet */
      /* Note:  ADC1 Channel 6 on PE12 is connected to XDEVKIT-MPC5744P potentiometer. */
@@ -67,7 +68,8 @@ void ADC1_Calibration(void) {       /* Steps below are from reference manual */
 
 }
 
-void ADC0_Calibration(void) {       /* Steps below are from reference manual */
+void ADC0_Calibration(void)
+{       /* Steps below are from reference manual */
   uint32_t ADC0_Calibration_Failed = 1;    /* Calibration has not passed yet */
 
   ADC_0.MCR.B.PWDN = 1;     /* Power down for starting calibration process */
@@ -108,7 +110,31 @@ void ADC0_Init(void) {
 
 
 
-void ADC1_Read_Chan (void) {
-	Result[0] = ADC_1.CDR[6].B.CDATA; //Read ADC1_AN6 conversion result data
-	ResultInMv[0] = (uint16_t) (ADC_VREF*Result[0]/0xFFF); /* Conversion in mv */
+void ADC_Read_Channels (void)
+{
+	if ( ADC_0.ISR.B.ECH ) {
+		Result[0] = ADC_0.CDR[0].B.CDATA; //Read ADC1_AN6 conversion result data
+		Result[1] = ADC_0.CDR[1].B.CDATA; //Read ADC1_AN6 conversion result data
+		Result[2] = ADC_0.CDR[11].B.CDATA; //Read ADC1_AN6 conversion result data
+		Result[3] = ADC_0.CDR[12].B.CDATA; //Read ADC1_AN6 conversion result data
+		Result[4] = ADC_0.CDR[13].B.CDATA; //Read ADC1_AN6 conversion result data
+		Result[5] = ADC_0.CDR[14].B.CDATA; //Read ADC1_AN6 conversion result data
+
+		ResultInMv[0] = (uint16_t) (ADC_VREF*Result[0]/0xFFF); /* Conversion in mv */
+		ADC_0.ISR.B.EOC = 1;
+	}
+
+	if ( ADC_1.ISR.B.ECH ) {
+		Result[6] = ADC_1.CDR[0].B.CDATA; //Read ADC1_AN6 conversion result data
+		Result[7] = ADC_1.CDR[1].B.CDATA; //Read ADC1_AN6 conversion result data
+		ADC_1.ISR.B.EOC = 0x01;
+    }
+}
+
+/*
+ *
+ */
+unsigned short int *ADC_GetBuffer(void)
+{
+	return Result;
 }

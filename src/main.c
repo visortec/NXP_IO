@@ -100,7 +100,6 @@ static uint32_t sMillisecTimer = 0;
 	uint8_t newline[] = {"\n\r"};
 	uint8_t EndMessage[] = {"\n\rMPC5744P CAN transmission test done.\n\r"};
 	uint32_t CAN_msg_count = 0;
-	uint8_t CANTxBuff[9] = {9};
 #endif
 
 __attribute__ ((section(".text")))
@@ -115,7 +114,6 @@ int main(void)
 	peri_clock_gating();   /* configure gating/enabling peri. clocks for modes*/
 	                         /* configuraiton occurs after mode transition */
 
-//	InitPeriClkGen();
 	system160mhz();        /* sysclk=160MHz, dividers configured, mode trans*/
 
 	/* Application  Initialization  start Here */
@@ -123,52 +121,12 @@ int main(void)
 
 	APPCanInitilization();
 	/* Debug Port Init */
-	LINFlexD_1_Init();
+//	LINFlexD_1_Init();
 
 	/* Initialization ENDs Here */
 
-
-	TransmitData((const char*)intro,(uint32_t)strlen((const char*)intro));
-
-	TransmitData((const char*)BeforeMessage,(uint32_t)strlen((const char*)BeforeMessage));
-	if(strlen((const char*)RxDATA) == 0){
-		TransmitData((const char*)EmptyMessage,(uint32_t)strlen((const char*)EmptyMessage));
-	}else{
-		TransmitData((const char*)RxMessage,(uint32_t)strlen((const char*)RxMessage));
-		TransmitData((const char*)RxDATA,(uint32_t)8);
-		TransmitData((const char*)period,(uint32_t)strlen((const char*)period));
-		TransmitData((const char*)newline,(uint32_t)strlen((const char*)newline));
-	}
-
-
 	while (1) {
-
-	memset(CANTxBuff, 0x00, 8 );
-//	GPIO_ReadOutToBuffer(CANTxBuff);
-//	TransmitMsg(CANTxBuff, 8 );           /* Transmit one message from a FlexCAN 0 buffer */
-//	ReceiveMsg();            /* Wait for the message to be received at FlexCAN 1 */
-	CAN_msg_count++;         /* Increment CAN message counter */
-	APPTransmitCanExIdFrame();
-	/* Only print this message once */
-	if(!transmit_done){
-		TransmitData((const char*)AfterMessage,(uint32_t)strlen((const char*)AfterMessage));
-		if(strlen((const char*)RxDATA) == 0){
-			TransmitData((const char*)EmptyMessage,(uint32_t)strlen((const char*)EmptyMessage));
-		}else{
-			TransmitData((const char*)RxMessage,(uint32_t)strlen((const char*)RxMessage));
-			TransmitData((const char*)RxDATA,(uint32_t)8);
-			TransmitData((const char*)period,(uint32_t)strlen((const char*)period));
-			TransmitData((const char*)newline,(uint32_t)strlen((const char*)newline));
-		}
-
-		TransmitData((const char*)EndMessage,(uint32_t)strlen((const char*)EndMessage));
-
-		/* Set the flag so it doesn't print again */
-		transmit_done = 1;
-	}
-
-	SIUL2.MSCR[PC11].B.OBE = 0; //Turn off red LED output
-
+		APPCanTransmitPeriodicTask(1);
 	}
 
 	return 0;
