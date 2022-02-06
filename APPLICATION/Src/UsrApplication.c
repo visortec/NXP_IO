@@ -31,7 +31,7 @@ const uint32_t  CANTxExID[] = { 0x06FF0807 , 0x06FF0907, 0x06FF0A07, 0x06FF0B07 
 #define  DIP10  PE13
 
 void APPInputsStatusChecking(void);
-void APP_ADCFrameFotmation(uint8_t FrameType,uint8_t *Buf);
+void APP_CANTxFrameFotmation(uint8_t FrameType,uint8_t *Buf);
 void APPTransmitCANExIdFrames(void);
 
 
@@ -124,26 +124,26 @@ void APPTransmitCANExIdFrames(void)
 		switch(FrmeIndex)
 		{
 			case 0:
-				APP_ADCFrameFotmation(1,CanTxFrame);
+				APP_CANTxFrameFotmation(1,CanTxFrame);
 				/* Transmit CAN Frame */
 				Dev_CANTransmitData(CANTxExID[0], CanTxFrame, 8);
 				FrmeIndex = 1;
 				break;
 			case 1:
-				APP_ADCFrameFotmation(1,CanTxFrame);
+				APP_CANTxFrameFotmation(2,CanTxFrame);
 				/* Transmit CAN Frame */
 				Dev_CANTransmitData(CANTxExID[1], CanTxFrame, 8);
 				FrmeIndex = 2;
 				break;
 			case 2:
-				APP_ADCFrameFotmation(1,CanTxFrame);
+				APP_CANTxFrameFotmation(3,CanTxFrame);
 				/* Transmit CAN Frame */
 				Dev_CANTransmitData(CANTxExID[2], CanTxFrame, 8);
 				FrmeIndex = 3;
 				break;
 			case 3:
 				FrmeIndex = 0;
-				APP_ADCFrameFotmation(1,CanTxFrame);
+				APP_CANTxFrameFotmation(4,CanTxFrame);
 				/* Transmit CAN Frame */
 				Dev_CANTransmitData(CANTxExID[3], CanTxFrame, 8);
 				sSecTimeOut_l = GetMilliSecCounter();
@@ -153,7 +153,7 @@ void APPTransmitCANExIdFrames(void)
 }
 
 
-void APP_ADCFrameFotmation(uint8_t FrameType,uint8_t *Buf)
+void APP_CANTxFrameFotmation(uint8_t FrameType,uint8_t *Buf)
 {
 	uint16_t *TempBuff = 0;
 

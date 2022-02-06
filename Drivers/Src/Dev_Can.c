@@ -40,6 +40,14 @@ void Dev_CANInitialization(void)
 	  }
 	  CAN_0.MB[0].CS.B.CODE = 8;     /* Message Buffer 0 set to TX INACTIVE */
 
+
+	  /* Message Buffer 4 set to RX IN-ACTIVE */
+
+	  CAN_0.MB[4].CS.B.IDE = 1;      /* MB 4 will look for a Ex_ID */
+	  CAN_0.MB[4].ID.R = 0x06FE0800; /* MB 4 will look for ID */
+	  CAN_0.MB[4].CS.B.CODE = 4;     /* MB 4 set to RX EMPTY */
+	  CAN_0.RXMGMASK.R = 0x1FFFFFFF; /* Global acceptance mask */
+
 	  /* Configure the CAN0_TX pin to transmit. */
 
 	  SIUL2.MSCR[PB0].B.SSS = 1; //PTB0 is for CAN0_TX. Select signal source select to CAN0_TX
@@ -116,10 +124,34 @@ void Dev_CANTransmitData(uint32_t ExID, char *pBuf, char MsgLen)
 	CAN_0.MB[0].CS.B.CODE =0xC;   /* Activate msg. buf. to transmit data frame */
 }
 
+uint32_t  RxCODE;              /* Received message buffer code */
+uint32_t  RxID;                /* Received message ID */
+uint32_t  RxLENGTH;            /* Recieved message number of data bytes */
+uint8_t   RxDATA[8];           /* Received message data string*/
+uint32_t  RxTIMESTAMP;         /* Received message time */
+
 /*@Brief: RX CAN Frame
  *
  */
 uint8_t Dev_CANFrameReceive(char *pBuf)
 {
+	uint8_t j; 	uint32_t dummy;
 
+	if(CAN_0.IFLAG1.B.BUF4TO1I != 8)
+	{
+		RxCODE   = CAN_0.MB[4].CS.B.CODE; /* Read CODE, ID, LENGTH, DATA, TIMESTAMP*/
+		RxID     = CAN_0.MB[4].ID.B.ID_STD;
+		RxLENGTH = CAN_0.MB[4].CS.B.DLC;
+		for (j=0; j< RxLENGTH; j++) {
+			pBuf[j] = CAN_0.MB[4].DATA.B[j];
+		}
+		RxTIMESTAMP = CAN_0.MB[4].CS.B.TIMESTAMP;
+		dummy = CAN_0.TIMER.R;             /* Read TIMER to unlock message buffers */
+		if(dummy){}
+		CAN_0.IFLAG1.R = 0x00000010;       /* Clear CAN 1 MB 4 flag */
+	}  /* Wait for CAN 1 MB 4 flag */
+	else {
+		return 0;
+	}
+	return 1;
 }
